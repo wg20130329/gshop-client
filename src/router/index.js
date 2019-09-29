@@ -11,23 +11,38 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      redirect: '/mSite'
+      redirect: '/mSite',
+      meta: {
+        ShowFooterGuide: true
+      }
     },
     {
       path: '/mSite',
-      component: MSite
+      component: MSite,
+      meta: {
+        ShowFooterGuide: true
+      }
     },
     {
       path: '/search',
-      component: Search
+      component: Search,
+      meta: {
+        ShowFooterGuide: true
+      }
     },
     {
       path: '/order',
-      component: Order
+      component: Order,
+      meta: {
+        ShowFooterGuide: true
+      }
     },
     {
       path: '/profile',
-      component: Profile
+      component: Profile,
+      meta: {
+        ShowFooterGuide: true
+      }
     },
     {
       path: '/login',
