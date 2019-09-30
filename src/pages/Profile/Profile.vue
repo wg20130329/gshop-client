@@ -99,6 +99,7 @@ export default {
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixins.styl"
   .profile //我的
+    overflow hidden
     text-decoration none
     width 100%
     .profile-number
