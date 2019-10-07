@@ -35,10 +35,10 @@
                   <span class="switch_text">...</span>
                 </div>
               </section>
-              <section class="login_message">
+              <div class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码">
                 <img class="get_verification" src="./images/captcha.svg" alt="captcha">
-              </section>
+              </div>
             </section>
           </div>
           <button class="login_submit">登录</button>
