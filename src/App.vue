@@ -1,8 +1,7 @@
-<script src="router/index.js"></script>
 <template>
   <div id="app">
     <router-view></router-view>
-    <FooterGuide v-show="$route.meta.ShowFooterGuide"></FooterGuide >
+    <FooterGuide v-show="$route.meta.showFoot"></FooterGuide>
   </div>
 </template>
 <script type="text/ecmascript-6">

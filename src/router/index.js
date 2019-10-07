@@ -13,35 +13,35 @@ export default new VueRouter({
       path: '/',
       redirect: '/mSite',
       meta: {
-        ShowFooterGuide: true
+        showFoot: true
       }
     },
     {
       path: '/mSite',
       component: MSite,
       meta: {
-        ShowFooterGuide: true
+        showFoot: true
       }
     },
     {
       path: '/search',
       component: Search,
       meta: {
-        ShowFooterGuide: true
+        showFoot: true
       }
     },
     {
       path: '/order',
       component: Order,
       meta: {
-        ShowFooterGuide: true
+        showFoot: true
       }
     },
     {
       path: '/profile',
       component: Profile,
       meta: {
-        ShowFooterGuide: true
+        showFoot: true
       }
     },
     {
