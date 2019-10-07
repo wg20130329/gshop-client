@@ -38,3 +38,7 @@ export const reqUser = () => ajax('/api/userinfo')
  * 请求登出
  */
 export const reqLogout = () => ajax('/api/logout')
+/**
+ * 请求登出
+ */
+export const text = () => ajax('/api/logout')
