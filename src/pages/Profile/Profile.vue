@@ -158,7 +158,6 @@ export default {
       background #fff
       overflow hidden
       .info_data_list
-        margin-left -40px
         clearFix()
         .info_data_link
           float left
@@ -202,7 +201,7 @@ export default {
         align-items center
         padding-left 15px
         text-decoration  none
-        height 45px
+        height 60px
         >span
           display flex
           align-items center
