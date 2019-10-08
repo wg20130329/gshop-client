@@ -46,8 +46,8 @@
                     </form>
                     <a href="javascript:;" class="about_us">关于我们</a>
                 </div>
-                <a href="javascript:" class="go_back">
-                    <i class="iconfont icon-jiantou2"></i>
+                <a href="javascript:" class="go_back" @click="$router.back()">
+                    <i class="iconfont iconchangyongicon-1"></i>
                 </a>
             </div>
         </section>
@@ -188,6 +188,6 @@ export default {}
                 width 30px
                 height 30px
                 >.iconfont
-                    font-size 20px
+                    font-size 25px
                     color #999
 </style>
