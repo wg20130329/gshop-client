@@ -120,27 +120,26 @@ export default {
           overflow hidden
           vertical-align top
           .iconicon-test34
-            font-size 60px
+            font-size 55px
             color #fff
         .user-info
           float left
           margin-top 8px
-          margin-left 15px
+          margin-left 10px
           p
             font-weight: 700
             font-size 18px
             color #fff
             .user-icon
               display inline-block
-              margin-left -15px
               margin-right 5px
               width 20px
               height 20px
-              .icon-mobile
-                font-size 30px
-                vertical-align text-top
+              .iconshouji
+                font-size 15px
             .icon-mobile-number
               font-size 14px
+              margin-left -15px
               color #fff
         .arrow
           width 12px
@@ -210,6 +209,8 @@ export default {
           >.iconfont
             margin-left -10px
             font-size 20px
+          .iconshouji
+            margin-left -15px
           .iconwodedingdan
             color #02a774
           .iconwodejifen-copy-copy
