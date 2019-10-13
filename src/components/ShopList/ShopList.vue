@@ -1,10 +1,10 @@
 <template>
   <div class="shop_container">
-    <ul class="shop_list">
-      <li class="shop_li border-1px" v-for="(shop,index) in shops" :key="index">
+    <ul class="shop_list" v-if="shops.length">
+      <li class="shop_li border-1px" v-for="(item,index) in shops" :key="index">
         <a>
           <div class="shop_left">
-            <img class="shop_img" src="imgBaseUrl + item.image_path">
+            <img class="shop_img" :src="imgBaseUrl + item.image_path">
           </div>
           <div class="shop_right">
             <section class="shop_detail_header">
@@ -15,13 +15,8 @@
             </section>
             <section class="shop_rating_order">
               <section class="shop_rating_order_left">
-                <div class="star star-24">
-                  <span class="star-item on"></span>
-                  <span class="star-item on"></span>
-                  <span class="star-item on"></span>
-                  <span class="star-item half"></span>
-                  <span class="star-item off"></span>
-                </div>
+                <!-- 星型存放的组件-->
+                <star :score="item.rating" :size="24"></star>
                 <div class="rating_section">
                     {{item.rating}}
                 </div>
@@ -44,11 +39,18 @@
         </a>
       </li>
     </ul>
+    <ul v-else>
+      <li v-for="item in 10" :key="item">
+        <img src="./images/shop_back.svg">
+      </li>
+    </ul>
   </div>
 </template>
 <script type="text/ecmascript-6">
 import {mapState} from 'vuex'
+import Star from '../Star/Star'
 export default {
+
   computed: {
     ...mapState(['shops'])
   },
@@ -56,6 +58,9 @@ export default {
     return {
       imgBaseUrl: 'http://cangdu.org:8001/img/'
     }
+  },
+  components: {
+    Star
   }
 }
 </script>

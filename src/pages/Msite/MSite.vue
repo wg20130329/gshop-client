@@ -22,9 +22,9 @@
             </a>
           </div>
         </div>
-        <!-- Add Pagination -->
-        <div class="swiper-pagination"></div>
+        <img src="./images/msite_back.svg" v-else>
       </div>
+
     </nav>
     <!--首页附近商家-->
     <div class="msite_shop_list">
@@ -63,7 +63,7 @@ export default {
         // eslint-disable-next-line no-new
         new Swiper('.swiper-container', {
           pagination: {
-            el: '.swiper-pagination',
+            el: '.swiper-pagination'
           },
           loop: true
         })
