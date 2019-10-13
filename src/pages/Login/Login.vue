@@ -10,14 +10,16 @@
                     </div>
                 </div>
                 <div class="login_content">
-                    <form>
+                    <form @submit.prevent="login">
                         <div :class="{on:loginWay}">
                             <section class="login_message">
                                 <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-                                <button :disabled="!rightPhone" class="get_verification" :class="{right_phone:rightPhone}" @click="getCode">{{computerTime > 0 ? '已发送' + computerTime + 's' : '获取验证码'}}</button>
+                                <button :disabled="!rightPhone" class="get_verification"
+                                        :class="{right_phone:rightPhone}"
+                                        @click="getCode">{{computerTime > 0 ? '已发送' + computerTime + 's' : '获取验证码'}}</button>
                             </section>
                             <section class="login_verification">
-                                <input type="tel" maxlength="8" placeholder="验证码">
+                                <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
                             </section>
                             <section class="login_hint">
                                 温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -27,7 +29,7 @@
                         <div :class="{on:!loginWay}">
                             <section>
                                 <section class="login_message">
-                                    <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                                    <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
                                 </section>
                                 <section class="login_verification">
                                     <input type="text" maxlength="8" placeholder="密码" v-if="showPwd" v-model="pwd">
@@ -38,12 +40,12 @@
                                     </div>
                                 </section>
                                 <section class="login_message">
-                                    <input type="text" maxlength="11" placeholder="验证码">
-                                    <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                                    <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
+                                    <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="getCaptcha">
                                 </section>
                             </section>
                         </div>
-                        <button class="login_submit">登录</button>
+                        <button class="login_submit" >登录</button>
                     </form>
                     <a href="javascript:;" class="about_us">关于我们</a>
                 </div>
@@ -52,10 +54,13 @@
                 </a>
             </div>
         </section>
+        <alert-tip :alert-text="alertText" v-show="alertShow" @closeTip="closeTip"></alert-tip>
     </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
+import AlertTip from '../../components/AlertTip/AlertTip'
 export default {
+  components: {AlertTip},
   data () {
     return {
       /*
@@ -65,7 +70,18 @@ export default {
       phone: '',
       computerTime: 0,
       showPwd: false,
-      pwd: ''
+      pwd: '',
+      name: '',
+      /*
+      验证码
+      */
+      captcha: '',
+      /*
+      短信验证码
+      */
+      code: '',
+      alertText: '',
+      alertShow: false
     }
   },
   computed: {
@@ -74,10 +90,9 @@ export default {
     }
   },
   methods: {
+    // 异步获取短信
     getCode () {
-      /*
-      如果当前没有计时
-       */
+      // 如果当前没有计时
       if (!this.computerTime) {
         this.computerTime = 30
         const interValId = setInterval(() => {
@@ -87,11 +102,46 @@ export default {
           }
         }, 1000)
       }
-      /*
-      发送ajax请求
-       */
+      // 发送ajax请求
+    },
+    // 弹框显示
+    showAlert (alertTest) {
+      this.alertShow = true
+      this.alertText = alertTest
+    },
+    // 验证
+    login () {
+      if (this.loginWay) {
+        // eslint-disable-next-line no-unused-vars
+        const {rightPhone, phone, code} = this
+        if (!this.rightPhone) {
+          /* 手机号不正确  */
+          this.showAlert('手机号不正确')
+        } else if (!/^1\d{6}$/.test(code)) {
+          // 验证码必须是6位数字
+          this.showAlert('验证码必须是6位数字')
+        }
+      } else {
+        // eslint-disable-next-line no-unused-vars
+        const {name, pwd, captcha} = this
+        if (!this.name) {
+          this.showAlert('用户不正确')
+        } else if (!this.pwd) {
+          this.showAlert('密码不正确')
+        } else {
+          this.showAlert('验证码不正确')
+        }
+      }
+    },
+    // 确认 关闭弹框
+    closeTip () {
+      this.alertShow = false
+      this.alertText = ''
+    },
+    // 获取验证码  每次点击必须路由变化，添加时间参数
+    getCaptcha (event) {
+      event.target.src = 'http://localhost:4000/captcha?time' + Date.now()
     }
-
   }
 }
 </script>
