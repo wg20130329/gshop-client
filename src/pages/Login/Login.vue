@@ -59,29 +59,21 @@
 </template>
 <script>
 import AlertTip from '../../components/AlertTip/AlertTip'
+import {reqPwdLogin, reqSendCode, reqSmsLogin} from '../../api'
 export default {
   components: {AlertTip},
   data () {
     return {
-      /*
-      //true 表示短信登录，false
-       */
-      loginWay: true,
-      phone: '',
-      computerTime: 0,
-      showPwd: false,
-      pwd: '',
-      name: '',
-      /*
-      验证码
-      */
-      captcha: '',
-      /*
-      短信验证码
-      */
-      code: '',
-      alertText: '',
-      alertShow: false
+      loginWay: true,     // 登录方式
+      phone: '',          // 用户
+      computerTime: 0,    // 用户
+      showPwd: false,     // 用户
+      pwd: '',            // 密码
+      name: '',           // 用户
+      captcha: '',        // 验证码
+      code: '',           // 短信验证
+      alertText: '',      //弹框文本
+      alertShow: false    //是否弹框显示
     }
   },
   computed: {
@@ -91,46 +83,84 @@ export default {
   },
   methods: {
     // 异步获取短信
-    getCode () {
+    async getCode () {
       // 如果当前没有计时
       if (!this.computerTime) {
         this.computerTime = 30
-        const interValId = setInterval(() => {
+        this.interValId = setInterval(() => {
           this.computerTime--
           if (this.computerTime <= 0) {
-            clearInterval(interValId)
+            clearInterval(this.interValId)
           }
         }, 1000)
       }
       // 发送ajax请求
+      const result = await reqSendCode(this.phone)
+      // 显示提示
+      if (result.code === 1) {
+        this.showAlert(result.msg)
+      }
+      // 停止倒计时
+      if (this.computerTime) {
+        this.computerTime = 0
+        clearInterval(this.interval)
+        this.interValId = 0
+      }
     },
     // 弹框显示
     showAlert (alertTest) {
       this.alertShow = true
       this.alertText = alertTest
     },
-    // 验证
-    login () {
+    // 登录
+    async login () {
+      let result
       if (this.loginWay) {
         // eslint-disable-next-line no-unused-vars
         const {rightPhone, phone, code} = this
         if (!this.rightPhone) {
           /* 手机号不正确  */
           this.showAlert('手机号不正确')
-        } else if (!/^1\d{6}$/.test(code)) {
+          return
+        } else if (!(/^\d{6}$/.test(code))) {
+           console.log(!(/^1\d{6}$/.test(code)))
           // 验证码必须是6位数字
           this.showAlert('验证码必须是6位数字')
+          return
         }
+        //手机号短信登录
+        result = await reqSmsLogin(phone, code);
+
       } else {
-        // eslint-disable-next-line no-unused-vars
         const {name, pwd, captcha} = this
-        if (!this.name) {
+        if (!name) {
           this.showAlert('用户不正确')
-        } else if (!this.pwd) {
+          return
+        } else if (!pwd) {
           this.showAlert('密码不正确')
-        } else {
+          return
+        } else if (!captcha){
           this.showAlert('验证码不正确')
+          return
         }
+        //账户登录
+        result = await reqPwdLogin({name, pwd, captcha});
+      }
+      // 停止倒计时
+      if (this.computerTime) {
+        this.computerTime = 0
+        clearInterval(this.interval)
+        this.interValId = 0
+      }
+      //根据结果数据处理
+      if (result.code === 0) {
+        const user = result.data
+        // 将user 保存到vuex的state
+        //去个人中心
+        await this.$router.replace('/profile')
+      }else{
+        const msg = result.msg
+        this.showAlert(msg)
       }
     },
     // 确认 关闭弹框
